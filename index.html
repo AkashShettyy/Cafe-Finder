@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Cafe Finder (Free Version)</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <!-- Our CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="sidebar">
+        <h2>☕ Nearby Cafes</h2>
+        <label for="radius">Search Radius:</label>
+        <select id="radius">
+          <option value="2000">2 km</option>
+          <option value="5000" selected>5 km</option>
+          <option value="10000">10 km</option>
+        </select>
+
+        <ul id="cafeList"></ul>
+      </div>
+
+      <div id="map"></div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Our JS -->
+    <script src="script.js"></script>
+  </body>
+</html>

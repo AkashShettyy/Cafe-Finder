@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+#sidebar {
+  width: 30%;
+  background: #f8f8f8;
+  overflow-y: auto;
+  padding: 15px;
+  border-right: 1px solid #ddd;
+}
+
+#sidebar h2 {
+  margin-top: 0;
+}
+
+#cafeList {
+  list-style: none;
+  padding: 0;
+}
+
+#cafeList li {
+  padding: 10px;
+  margin-bottom: 8px;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#cafeList li:hover {
+  background: #e6f2ff;
+}
+
+#map {
+  width: 70%;
+}
