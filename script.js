@@ -1,5 +1,6 @@
 let currentLat;
 let currentLon;
+let radiusCircle;
 
 const map = L.map("map");
 
@@ -57,6 +58,19 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 }
 
 function findCafes(userLat, userLon, radius = 5000) {
+  // Remove old circle if exists
+  if (radiusCircle) {
+    map.removeLayer(radiusCircle);
+  }
+
+  // Draw new circle
+  radiusCircle = L.circle([userLat, userLon], {
+    radius: radius, // in meters
+    color: "blue",
+    fillColor: "#add8e6",
+    fillOpacity: 0.2,
+  }).addTo(map);
+
   document.getElementById("loading").style.display = "block";
   const query = `
     [out:json];
