@@ -14,6 +14,8 @@
     <div class="container">
       <div id="sidebar">
         <h2>☕ Nearby Cafes</h2>
+        <input type="text" id="searchInput" placeholder="🔍 Search cafe..." />
+
         <label for="radius">Search Radius:</label>
         <select id="radius">
           <option value="2000">2 km</option>
@@ -21,7 +23,6 @@
           <option value="10000">10 km</option>
         </select>
         <div id="loading" style="display: none">🔄 Loading cafes...</div>
-
         <ul id="cafeList"></ul>
       </div>
 

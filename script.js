@@ -1,6 +1,8 @@
 let currentLat;
 let currentLon;
 let radiusCircle;
+let cafesData = [];
+let cafeMarkers = [];
 
 const map = L.map("map");
 
@@ -8,12 +10,16 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "&copy; OpenStreetMap contributors",
 }).addTo(map);
 
+// =======================
+// Get User Location
+// =======================
+
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(function (position) {
-    const lat = position.coords.latitude;
-    const lon = position.coords.longitude;
+    currentLat = position.coords.latitude;
+    currentLon = position.coords.longitude;
 
-    map.setView([lat, lon], 15);
+    map.setView([currentLat, currentLon], 15);
 
     const userIcon = new L.Icon({
       iconUrl:
@@ -26,21 +32,23 @@ if (navigator.geolocation) {
       shadowSize: [41, 41],
     });
 
-    L.marker([lat, lon], { icon: userIcon })
+    L.marker([currentLat, currentLon], { icon: userIcon })
       .addTo(map)
       .bindPopup("📍 You are here")
       .openPopup();
 
-    currentLat = lat;
-    currentLon = lon;
-
-    findCafes(lat, lon);
+    findCafes(currentLat, currentLon);
   });
 } else {
   alert("Geolocation not supported");
 }
+
+// =======================
+// Distance Calculation
+// =======================
+
 function calculateDistance(lat1, lon1, lat2, lon2) {
-  const R = 6371; // Earth radius in km
+  const R = 6371;
 
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLon = ((lon2 - lon1) * Math.PI) / 180;
@@ -57,21 +65,31 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
+// =======================
+// Fetch Cafes
+// =======================
+
 function findCafes(userLat, userLon, radius = 5000) {
-  // Remove old circle if exists
+  // Show loading
+  document.getElementById("loading").style.display = "block";
+
+  // Remove old markers
+  cafeMarkers.forEach((marker) => map.removeLayer(marker));
+  cafeMarkers = [];
+
+  // Remove old circle
   if (radiusCircle) {
     map.removeLayer(radiusCircle);
   }
 
   // Draw new circle
   radiusCircle = L.circle([userLat, userLon], {
-    radius: radius, // in meters
+    radius: radius,
     color: "blue",
     fillColor: "#add8e6",
     fillOpacity: 0.2,
   }).addTo(map);
 
-  document.getElementById("loading").style.display = "block";
   const query = `
     [out:json];
     node["amenity"="cafe"](around:${radius}, ${userLat}, ${userLon});
@@ -84,10 +102,6 @@ function findCafes(userLat, userLon, radius = 5000) {
   })
     .then((response) => response.json())
     .then((data) => {
-      const cafeList = document.getElementById("cafeList");
-      cafeList.innerHTML = "";
-
-      // Step 1: Build array
       const cafesWithDistance = [];
 
       data.elements.forEach((cafe) => {
@@ -108,44 +122,73 @@ function findCafes(userLat, userLon, radius = 5000) {
             distance,
           });
         }
-        document.getElementById("loading").style.display = "none";
       });
 
-      // Step 2: Sort by nearest
+      // Sort nearest first
       cafesWithDistance.sort((a, b) => a.distance - b.distance);
 
-      // Step 3: Display sorted cafes
-      cafesWithDistance.forEach((cafe) => {
-        const marker = L.marker([cafe.lat, cafe.lon])
-          .addTo(map)
-          .bindPopup(`☕ ${cafe.name}<br>${cafe.distance.toFixed(2)} km away`);
+      cafesData = cafesWithDistance;
 
-        const li = document.createElement("li");
-        li.innerHTML = `
-    <strong>${cafe.name}</strong><br>
-    ${cafe.distance.toFixed(2)} km away
-  `;
+      renderCafeList(cafesData);
 
-        li.addEventListener("click", function () {
-          map.setView([cafe.lat, cafe.lon], 17);
-          marker.openPopup();
-        });
-
-        cafeList.appendChild(li);
-      });
+      // Hide loading
+      document.getElementById("loading").style.display = "none";
     });
 }
+
+// =======================
+// Render Cafe List
+// =======================
+
+function renderCafeList(cafes) {
+  const cafeList = document.getElementById("cafeList");
+  cafeList.innerHTML = "";
+
+  cafes.forEach((cafe) => {
+    const marker = L.marker([cafe.lat, cafe.lon])
+      .addTo(map)
+      .bindPopup(`☕ ${cafe.name}<br>${cafe.distance.toFixed(2)} km away`);
+
+    cafeMarkers.push(marker);
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <strong>${cafe.name}</strong><br>
+      ${cafe.distance.toFixed(2)} km away
+    `;
+
+    li.addEventListener("click", function () {
+      map.setView([cafe.lat, cafe.lon], 17);
+      marker.openPopup();
+    });
+
+    cafeList.appendChild(li);
+  });
+}
+
+// =======================
+// Radius Change Listener
+// =======================
+
 document.getElementById("radius").addEventListener("change", function () {
   const selectedRadius = parseInt(this.value);
-
-  map.eachLayer((layer) => {
-    if (
-      layer instanceof L.Marker &&
-      !layer._popup?.getContent().includes("You are here")
-    ) {
-      map.removeLayer(layer);
-    }
-  });
-
   findCafes(currentLat, currentLon, selectedRadius);
+});
+
+// =======================
+// Search Filter
+// =======================
+
+document.getElementById("searchInput").addEventListener("input", function () {
+  const searchText = this.value.toLowerCase();
+
+  const filtered = cafesData.filter((cafe) =>
+    cafe.name.toLowerCase().includes(searchText),
+  );
+
+  // Clear old markers
+  cafeMarkers.forEach((marker) => map.removeLayer(marker));
+  cafeMarkers = [];
+
+  renderCafeList(filtered);
 });
