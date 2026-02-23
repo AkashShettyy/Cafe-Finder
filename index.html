@@ -1,7 +1,9 @@
 <!doctype html>
 <html>
   <head>
-    <title>Cafe Finder (Free Version)</title>
+    <title>Cafe Finder</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -13,7 +15,10 @@
   <body>
     <div class="container">
       <div id="sidebar">
-        <h2>☕ Nearby Cafes</h2>
+        <h2>☕ Cafe Finder</h2>
+
+        <button id="darkToggle">🌙 Toggle Dark Mode</button>
+
         <input type="text" id="searchInput" placeholder="🔍 Search cafe..." />
 
         <label for="radius">Search Radius:</label>
@@ -22,7 +27,10 @@
           <option value="5000" selected>5 km</option>
           <option value="10000">10 km</option>
         </select>
-        <div id="loading" style="display: none">🔄 Loading cafes...</div>
+
+        <div id="loading">🔄 Loading cafes...</div>
+        <div id="noResults">🚫 No cafes found</div>
+
         <ul id="cafeList"></ul>
       </div>
 
