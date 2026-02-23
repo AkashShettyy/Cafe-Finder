@@ -20,6 +20,12 @@ body {
   margin-top: 0;
 }
 
+#loading {
+  margin: 10px 0;
+  font-weight: bold;
+  color: #555;
+}
+
 #cafeList {
   list-style: none;
   padding: 0;

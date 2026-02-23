@@ -57,6 +57,7 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 }
 
 function findCafes(userLat, userLon, radius = 5000) {
+  document.getElementById("loading").style.display = "block";
   const query = `
     [out:json];
     node["amenity"="cafe"](around:${radius}, ${userLat}, ${userLon});
@@ -93,6 +94,7 @@ function findCafes(userLat, userLon, radius = 5000) {
             distance,
           });
         }
+        document.getElementById("loading").style.display = "none";
       });
 
       // Step 2: Sort by nearest
