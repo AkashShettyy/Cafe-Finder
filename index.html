@@ -8,6 +8,14 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- Our CSS -->
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -15,21 +23,41 @@
   <body>
     <div class="container">
       <div id="sidebar">
-        <h2>☕ Cafe Finder</h2>
+        <div class="header">
+          <div class="title-section">
+            <div class="logo">☕</div>
+            <h1>Cafe Finder</h1>
+          </div>
+          <span id="cafeCount" class="badge">0 cafes</span>
+        </div>
 
-        <button id="darkToggle">🌙 Toggle Dark Mode</button>
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Search cafes..." />
+        </div>
 
-        <input type="text" id="searchInput" placeholder="🔍 Search cafe..." />
+        <div class="controls">
+          <div class="control-group">
+            <label for="radius">📍 Radius</label>
+            <select id="radius">
+              <option value="2000">2 km</option>
+              <option value="5000" selected>5 km</option>
+              <option value="10000">10 km</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="sortBy">🔄 Sort by</label>
+            <select id="sortBy">
+              <option value="distance">Distance</option>
+              <option value="name">Name</option>
+            </select>
+          </div>
+        </div>
 
-        <label for="radius">Search Radius:</label>
-        <select id="radius">
-          <option value="2000">2 km</option>
-          <option value="5000" selected>5 km</option>
-          <option value="10000">10 km</option>
-        </select>
+        <button id="darkToggle" class="dark-toggle">🌙</button>
 
-        <div id="loading">🔄 Loading cafes...</div>
-        <div id="noResults">🚫 No cafes found</div>
+        <div id="loading" class="status-message">🔄 Loading cafes...</div>
+        <div id="noResults" class="status-message">🚫 No cafes found</div>
 
         <ul id="cafeList"></ul>
       </div>

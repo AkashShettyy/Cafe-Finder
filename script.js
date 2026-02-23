@@ -3,6 +3,8 @@ let currentLon;
 let radiusCircle;
 let cafesData = [];
 let cafeMarkers = [];
+let favorites = JSON.parse(localStorage.getItem("cafeFavorites")) || [];
+let currentSort = "distance";
 
 const map = L.map("map");
 
@@ -66,8 +68,10 @@ function findCafes(userLat, userLon, radius = 5000) {
 
   radiusCircle = L.circle([userLat, userLon], {
     radius: radius,
-    color: "blue",
-    fillOpacity: 0.2,
+    color: "#339af0", // softer blue
+    weight: 2, // thinner border
+    fillColor: "#74c0fc", // lighter fill
+    fillOpacity: 0.08, // MUCH lighter fill
   }).addTo(map);
 
   const query = `
@@ -99,6 +103,7 @@ function findCafes(userLat, userLon, radius = 5000) {
             lat: cafe.lat,
             lon: cafe.lon,
             distance,
+            id: cafe.id,
           });
         }
       });
@@ -106,6 +111,7 @@ function findCafes(userLat, userLon, radius = 5000) {
       cafesWithDistance.sort((a, b) => a.distance - b.distance);
       cafesData = cafesWithDistance;
 
+      updateCafeCount();
       renderCafeList(cafesData);
 
       document.getElementById("loading").style.display = "none";
@@ -129,13 +135,19 @@ function renderCafeList(cafes) {
 
     cafeMarkers.push(marker);
 
+    const isFavorited = favorites.includes(cafe.id);
     const li = document.createElement("li");
     li.innerHTML = `
       <strong>${cafe.name}</strong><br>
-      ${cafe.distance.toFixed(2)} km away
+      <span style="color: #666; font-size: 14px;">${cafe.distance.toFixed(2)} km away</span>
+      <div class="cafe-actions">
+        <button class="btn-directions" onclick="getDirections(${cafe.lat}, ${cafe.lon})">🗺️ Directions</button>
+        <button class="btn-favorite ${isFavorited ? "favorited" : ""}" onclick="toggleFavorite('${cafe.id}', event)">${isFavorited ? "❤️" : "🤍"}</button>
+      </div>
     `;
 
-    li.addEventListener("click", function () {
+    li.addEventListener("click", function (e) {
+      if (e.target.tagName === "BUTTON") return;
       document
         .querySelectorAll("#cafeList li")
         .forEach((item) => item.classList.remove("activeCafe"));
@@ -150,9 +162,52 @@ function renderCafeList(cafes) {
   });
 }
 
+// Update Cafe Count
+function updateCafeCount() {
+  const count = cafesData.length;
+  document.getElementById("cafeCount").textContent =
+    `${count} cafe${count !== 1 ? "s" : ""}`;
+}
+
+// Get Directions
+function getDirections(lat, lon) {
+  const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
+  window.open(url, "_blank");
+}
+
+// Toggle Favorite
+function toggleFavorite(cafeId, event) {
+  event.stopPropagation();
+  const index = favorites.indexOf(cafeId);
+  if (index > -1) {
+    favorites.splice(index, 1);
+  } else {
+    favorites.push(cafeId);
+  }
+  localStorage.setItem("cafeFavorites", JSON.stringify(favorites));
+  renderCafeList(cafesData);
+}
+
+// Sort Cafes
+function sortCafes(cafes) {
+  if (currentSort === "name") {
+    return [...cafes].sort((a, b) => a.name.localeCompare(b.name));
+  }
+  return [...cafes].sort((a, b) => a.distance - b.distance);
+}
+
 // Radius Change
 document.getElementById("radius").addEventListener("change", function () {
   findCafes(currentLat, currentLon, parseInt(this.value));
+});
+
+// Sort Change
+document.getElementById("sortBy").addEventListener("change", function () {
+  currentSort = this.value;
+  const sorted = sortCafes(cafesData);
+  cafeMarkers.forEach((marker) => map.removeLayer(marker));
+  cafeMarkers = [];
+  renderCafeList(sorted);
 });
 
 // Search
@@ -166,7 +221,8 @@ document.getElementById("searchInput").addEventListener("input", function () {
   cafeMarkers.forEach((marker) => map.removeLayer(marker));
   cafeMarkers = [];
 
-  renderCafeList(filtered);
+  const sorted = sortCafes(filtered);
+  renderCafeList(sorted);
 });
 
 // Dark Mode Toggle
