@@ -130,6 +130,46 @@ body {
   border-color: var(--border-strong);
 }
 
+.quick-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 0 16px;
+  padding-top: 16px;
+}
+
+.quick-stat {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: var(--shadow-soft);
+}
+
+.quick-stat-value,
+.quick-stat-label {
+  display: block;
+}
+
+.quick-stat-value {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quick-stat-label {
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .panel-controls {
   margin: 16px;
   padding: 14px;
@@ -359,6 +399,7 @@ body {
 .dark #sortBy,
 .dark #cafeList li,
 .dark .panel-controls,
+.dark .quick-stat,
 .dark .dark-toggle,
 .dark .badge,
 .dark #cafeList li .btn-favorite {

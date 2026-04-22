@@ -21,7 +21,10 @@ const elements = {
   noResults: document.getElementById("noResults"),
   searchInput: document.getElementById("searchInput"),
   radius: document.getElementById("radius"),
+  radiusLabel: document.getElementById("radiusLabel"),
+  savedCount: document.getElementById("savedCount"),
   sortBy: document.getElementById("sortBy"),
+  visibleCount: document.getElementById("visibleCount"),
   darkToggle: document.getElementById("darkToggle"),
 };
 
@@ -128,6 +131,8 @@ function sortCafes(cafes) {
 }
 
 function updateCafeCount(visibleCount, totalCount) {
+  elements.visibleCount.textContent = visibleCount;
+
   if (visibleCount !== totalCount) {
     elements.cafeCount.textContent = `${visibleCount} of ${totalCount} Cafes`;
     return;
@@ -135,6 +140,10 @@ function updateCafeCount(visibleCount, totalCount) {
 
   elements.cafeCount.textContent =
     `${visibleCount} ${visibleCount === 1 ? "Cafe" : "Cafes"}`;
+}
+
+function updateSavedCount() {
+  elements.savedCount.textContent = favorites.size;
 }
 
 function renderCafeList(cafes) {
@@ -247,6 +256,7 @@ function getDirections(lat, lon) {
 
 function persistFavorites() {
   localStorage.setItem("cafeFavorites", JSON.stringify([...favorites]));
+  updateSavedCount();
 }
 
 function handleFavoriteToggle(cafeId, button) {
@@ -323,6 +333,7 @@ elements.radius.addEventListener("change", function () {
     return;
   }
 
+  elements.radiusLabel.textContent = this.options[this.selectedIndex].textContent;
   findCafes(currentLat, currentLon, Number.parseInt(this.value, 10));
 });
 
@@ -343,3 +354,5 @@ elements.darkToggle.addEventListener("click", function () {
   const isDark = document.documentElement.classList.toggle("dark");
   this.textContent = isDark ? "Light" : "Dark";
 });
+
+updateSavedCount();
