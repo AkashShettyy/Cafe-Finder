@@ -224,6 +224,46 @@ body {
   box-shadow: 0 0 0 3px rgba(23, 92, 211, 0.16);
 }
 
+.filter-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 12px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-soft);
+}
+
+.filter-tab {
+  min-height: 34px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-tab:hover,
+.filter-tab:focus-visible {
+  color: var(--text);
+}
+
+.filter-tab:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(23, 92, 211, 0.16);
+}
+
+.filter-tab.active {
+  background: var(--surface);
+  color: var(--primary-strong);
+  box-shadow: var(--shadow-soft);
+}
+
 .controls {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -434,6 +474,7 @@ body {
 .dark #cafeList li,
 .dark .panel-controls,
 .dark .quick-stat,
+.dark .filter-tab.active,
 .dark .dark-toggle,
 .dark .badge,
 .dark #cafeList li .btn-favorite {

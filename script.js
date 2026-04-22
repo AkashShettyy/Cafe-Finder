@@ -5,6 +5,7 @@ let cafesData = [];
 let visibleCafes = [];
 let currentSort = "distance";
 let searchTerm = "";
+let activeFilter = "all";
 let activeCafeId = null;
 let searchDebounceTimer;
 
@@ -19,6 +20,7 @@ const elements = {
   cafeCount: document.getElementById("cafeCount"),
   loading: document.getElementById("loading"),
   noResults: document.getElementById("noResults"),
+  filterTabs: document.querySelectorAll(".filter-tab"),
   searchInput: document.getElementById("searchInput"),
   radius: document.getElementById("radius"),
   radiusLabel: document.getElementById("radiusLabel"),
@@ -146,6 +148,22 @@ function updateSavedCount() {
   elements.savedCount.textContent = favorites.size;
 }
 
+function updateNoResultsMessage() {
+  if (activeFilter === "saved" && searchTerm) {
+    elements.noResults.textContent = "No saved cafes match your search.";
+    return;
+  }
+
+  if (activeFilter === "saved") {
+    elements.noResults.textContent = "No saved cafes yet.";
+    return;
+  }
+
+  elements.noResults.textContent = searchTerm
+    ? "No cafes match your search."
+    : "No cafes found";
+}
+
 function getWalkingEta(distanceKm) {
   return Math.max(1, Math.round((distanceKm / 4.8) * 60));
 }
@@ -188,14 +206,19 @@ function renderCafeList(cafes) {
 }
 
 function applyFiltersAndSort() {
-  const filtered = cafesData.filter((cafe) =>
-    cafe.name.toLowerCase().includes(searchTerm),
-  );
+  const filtered = cafesData.filter((cafe) => {
+    const matchesSearch = cafe.name.toLowerCase().includes(searchTerm);
+    const matchesFilter =
+      activeFilter === "all" || favorites.has(String(cafe.id));
+
+    return matchesSearch && matchesFilter;
+  });
 
   visibleCafes = sortCafes(filtered);
   renderCafeList(visibleCafes);
   syncVisibleMarkers(visibleCafes);
   updateCafeCount(visibleCafes.length, cafesData.length);
+  updateNoResultsMessage();
 
   elements.noResults.style.display = visibleCafes.length ? "none" : "block";
 }
@@ -283,6 +306,10 @@ function handleFavoriteToggle(cafeId, button) {
   }
 
   persistFavorites();
+
+  if (activeFilter === "saved") {
+    applyFiltersAndSort();
+  }
 }
 
 function setActiveCafe(cafeId) {
@@ -352,6 +379,17 @@ elements.radius.addEventListener("change", function () {
 elements.sortBy.addEventListener("change", function () {
   currentSort = this.value;
   applyFiltersAndSort();
+});
+
+elements.filterTabs.forEach((tab) => {
+  tab.addEventListener("click", function () {
+    elements.filterTabs.forEach((filterTab) =>
+      filterTab.classList.toggle("active", filterTab === this),
+    );
+
+    activeFilter = this.dataset.filter;
+    applyFiltersAndSort();
+  });
 });
 
 elements.searchInput.addEventListener(
