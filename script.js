@@ -146,6 +146,10 @@ function updateSavedCount() {
   elements.savedCount.textContent = favorites.size;
 }
 
+function getWalkingEta(distanceKm) {
+  return Math.max(1, Math.round((distanceKm / 4.8) * 60));
+}
+
 function renderCafeList(cafes) {
   elements.cafeList.innerHTML = "";
 
@@ -159,11 +163,17 @@ function renderCafeList(cafes) {
     li.dataset.cafeId = cafeId;
     li.style.setProperty("--delay", `${Math.min(index, 12) * 30}ms`);
     li.innerHTML = `
-      <h3 class="cafe-name">${cafe.name}</h3>
-      <div class="cafe-distance">${cafe.distance.toFixed(2)} km away</div>
+      <div class="cafe-card-top">
+        <h3 class="cafe-name">${cafe.name}</h3>
+        <span class="cafe-rank">#${index + 1}</span>
+      </div>
+      <div class="cafe-meta">
+        <span>${cafe.distance.toFixed(2)} km</span>
+        <span>${getWalkingEta(cafe.distance)} min walk</span>
+      </div>
       <div class="cafe-actions">
-        <button class="btn-directions" data-action="directions" data-lat="${cafe.lat}" data-lon="${cafe.lon}">Directions</button>
-        <button class="btn-favorite ${isFavorited ? "favorited" : ""}" data-action="favorite" data-cafe-id="${cafeId}">${isFavorited ? "Saved" : "Save"}</button>
+        <button class="btn-directions" data-action="directions" data-lat="${cafe.lat}" data-lon="${cafe.lon}">Open route</button>
+        <button class="btn-favorite ${isFavorited ? "favorited" : ""}" data-action="favorite" data-cafe-id="${cafeId}" aria-label="${isFavorited ? "Remove saved cafe" : "Save cafe"}">${isFavorited ? "Saved" : "Save"}</button>
       </div>
     `;
 
@@ -264,10 +274,12 @@ function handleFavoriteToggle(cafeId, button) {
     favorites.delete(cafeId);
     button.classList.remove("favorited");
     button.textContent = "Save";
+    button.setAttribute("aria-label", "Save cafe");
   } else {
     favorites.add(cafeId);
     button.classList.add("favorited");
     button.textContent = "Saved";
+    button.setAttribute("aria-label", "Remove saved cafe");
   }
 
   persistFavorites();
