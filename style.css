@@ -279,15 +279,16 @@ body {
   font-size: 13px;
   font-weight: 800;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.filter-tab:hover,
-.filter-tab:focus-visible {
+.filter-tab:hover:not(.active) {
+  background: rgba(0, 0, 0, 0.04);
   color: var(--text);
 }
 
 .filter-tab:focus-visible {
+  color: var(--text);
   outline: none;
   box-shadow: 0 0 0 3px rgba(23, 92, 211, 0.16);
 }
@@ -295,7 +296,7 @@ body {
 .filter-tab.active {
   background: var(--surface);
   color: var(--primary-strong);
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.02);
 }
 
 .controls {
@@ -514,6 +515,10 @@ body {
 .dark .badge,
 .dark #cafeList li .btn-favorite {
   background: #101828;
+}
+
+.dark .filter-tab:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .dark #cafeList li .btn-favorite:hover,
