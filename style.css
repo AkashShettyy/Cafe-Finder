@@ -138,18 +138,21 @@ body {
   min-width: 62px;
   padding: 0 12px;
   border: 1px solid var(--border);
-  border-radius: 10px;
-  background: #fff;
+  border-radius: 999px;
+  background: var(--surface);
   color: var(--text);
   font-family: inherit;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition: all 0.24s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dark-toggle:hover {
-  background: #f8fafc;
+  transform: translateY(-1px);
+  background: var(--surface-soft);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
   border-color: var(--border-strong);
 }
 
