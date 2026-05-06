@@ -478,6 +478,27 @@ body {
   }
 }
 
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.skeleton {
+  background: #e2e8f0;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-title { width: 60%; height: 20px; margin-bottom: 12px; border-radius: 8px;}
+.skeleton-meta { display: flex; gap: 8px; margin-bottom: 14px; }
+.skeleton-badge { width: 60px; height: 24px; border-radius: 12px; }
+.skeleton-actions { display: flex; gap: 8px; }
+.skeleton-btn-main { flex: 1; height: 36px; border-radius: 10px; }
+.skeleton-btn-icon { width: 64px; height: 36px; border-radius: 10px; }
+.skeleton-card {
+  pointer-events: none;
+}
+
 .dark {
   --bg: #0b1220;
   --bg-accent: #111927;

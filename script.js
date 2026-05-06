@@ -223,9 +223,26 @@ function applyFiltersAndSort() {
   elements.noResults.style.display = visibleCafes.length ? "none" : "block";
 }
 
+function showSkeletonLoading() {
+  elements.cafeList.innerHTML = Array(4).fill(`
+    <li class="skeleton-card">
+      <div class="skeleton skeleton-title"></div>
+      <div class="skeleton-meta">
+        <div class="skeleton skeleton-badge"></div>
+        <div class="skeleton skeleton-badge"></div>
+      </div>
+      <div class="skeleton-actions">
+        <div class="skeleton skeleton-btn-main"></div>
+        <div class="skeleton skeleton-btn-icon"></div>
+      </div>
+    </li>
+  `).join('');
+}
+
 async function findCafes(userLat, userLon, radius = 5000) {
-  elements.loading.style.display = "block";
+  elements.loading.style.display = "none";
   elements.noResults.style.display = "none";
+  showSkeletonLoading();
 
   clearAllCafeMarkers();
   activeCafeId = null;
@@ -275,10 +292,9 @@ async function findCafes(userLat, userLon, radius = 5000) {
 
     applyFiltersAndSort();
   } catch {
+    elements.cafeList.innerHTML = "";
     elements.noResults.textContent = "Unable to load cafes right now.";
     elements.noResults.style.display = "block";
-  } finally {
-    elements.loading.style.display = "none";
   }
 }
 
