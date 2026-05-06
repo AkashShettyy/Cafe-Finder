@@ -13,6 +13,7 @@
   --success-text: #027a48;
   --warning-bg: #fef3f2;
   --warning-text: #b42318;
+  --pattern: rgba(16, 24, 40, 0.04);
   --surface-glass: rgba(255, 255, 255, 0.85);
   --shadow-soft: 0 2px 8px rgba(16, 24, 40, 0.06);
   --shadow-medium: 0 10px 24px rgba(16, 24, 40, 0.08);
@@ -35,9 +36,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   letter-spacing: -0.01em;
-  background:
-    radial-gradient(circle at 15% 10%, #ffffff 0%, transparent 34%),
-    linear-gradient(160deg, var(--bg) 0%, var(--bg-accent) 100%);
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(circle at 15% 10%, rgba(255,255,255,0.4) 0%, transparent 34%),
+    radial-gradient(var(--pattern) 1px, transparent 1px);
+  background-size: 100% 100%, 20px 20px;
+  background-position: 0 0, 0 0;
 }
 
 .container {
@@ -565,6 +569,7 @@ body {
   --success-text: #75e0a7;
   --warning-bg: #3d1715;
   --warning-text: #fda29b;
+  --pattern: rgba(255, 255, 255, 0.03);
   --surface-glass: rgba(16, 24, 40, 0.85);
   --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.24);
   --shadow-medium: 0 10px 20px rgba(0, 0, 0, 0.32);
