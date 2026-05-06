@@ -56,6 +56,20 @@ body {
   z-index: 10;
 }
 
+#sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+#sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+#sidebar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+#sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
 .header {
   position: sticky;
   top: 0;
@@ -498,6 +512,13 @@ body {
 
 .dark .activeCafe {
   background: #122241 !important;
+}
+
+.dark #sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+}
+.dark #sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 @media (max-width: 920px) {
