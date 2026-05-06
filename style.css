@@ -354,24 +354,24 @@ body {
 }
 
 #cafeList li {
-  margin-bottom: 10px;
-  padding: 14px;
-  border-radius: 12px;
-  background: #fff;
+  margin-bottom: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--surface);
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 4px 6px rgba(16, 24, 40, 0.03), 0 1px 3px rgba(16, 24, 40, 0.05);
   cursor: pointer;
-  animation: card-in 0.24s ease forwards;
+  animation: card-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   animation-delay: var(--delay, 0ms);
   opacity: 0;
-  transform: translateY(5px);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  transform: translateY(8px);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #cafeList li:hover {
-  transform: translateY(-1px);
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-medium);
+  transform: translateY(-3px);
+  border-color: var(--primary);
+  box-shadow: 0 12px 24px rgba(16, 24, 40, 0.08), 0 4px 8px rgba(16, 24, 40, 0.04);
 }
 
 .cafe-card-top {
