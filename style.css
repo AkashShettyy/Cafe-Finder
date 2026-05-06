@@ -234,10 +234,10 @@ body {
   font-family: inherit;
   font-size: 14px;
   color: var(--text);
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 12px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #searchInput {
@@ -254,7 +254,8 @@ body {
 #sortBy:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(23, 92, 211, 0.16);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(23, 92, 211, 0.15);
 }
 
 .filter-tabs {
