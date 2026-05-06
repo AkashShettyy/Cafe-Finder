@@ -456,17 +456,26 @@ body {
   color: var(--text);
   background: #fff;
   border-color: var(--border);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #cafeList li .btn-favorite:hover {
   background: #f9fafb;
   border-color: var(--border-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(16, 24, 40, 0.05);
 }
 
 #cafeList li .btn-favorite.favorited {
-  color: var(--primary-strong);
-  background: #eff4ff;
-  border-color: #b2ccff;
+  color: #fff;
+  background: var(--warning-text);
+  border-color: var(--warning-text);
+  box-shadow: 0 2px 4px rgba(180, 35, 24, 0.2);
+}
+
+#cafeList li .btn-favorite.favorited:hover {
+  background: #9e1a11;
+  border-color: #9e1a11;
 }
 
 .activeCafe {
