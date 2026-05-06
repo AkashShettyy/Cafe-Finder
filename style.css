@@ -502,6 +502,33 @@ body {
   }
 }
 
+/* Leaflet Overrides */
+.leaflet-bar {
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(16, 24, 40, 0.08) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+.leaflet-bar a {
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
+  border-bottom: 1px solid var(--border) !important;
+  transition: all 0.2s ease !important;
+  width: 34px !important;
+  height: 34px !important;
+  line-height: 34px !important;
+}
+
+.leaflet-bar a:hover {
+  background-color: var(--surface-soft) !important;
+  color: var(--primary) !important;
+}
+
+.leaflet-control-zoom-in, .leaflet-control-zoom-out {
+  font-family: inherit !important;
+}
+
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
