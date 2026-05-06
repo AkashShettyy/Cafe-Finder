@@ -440,10 +440,14 @@ body {
   padding: 9px 10px;
   color: #fff;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
+  box-shadow: 0 2px 4px rgba(23, 92, 211, 0.2);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #cafeList li .btn-directions:hover {
   background: linear-gradient(135deg, #1d67ea 0%, #1752bc 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(23, 92, 211, 0.3);
 }
 
 #cafeList li .btn-favorite {
@@ -479,9 +483,13 @@ body {
 }
 
 @keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
